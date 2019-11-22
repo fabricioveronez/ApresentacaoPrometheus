@@ -4,6 +4,9 @@ global:
   evaluation_interval: 30s
   # scrape_timeout is set to the global default (10s).
 
+  # rule_files:
+  #   - 'alert.rules.yml'
+
   external_labels:
     monitor: codelab    
 
@@ -23,4 +26,11 @@ scrape_configs:
         
     scrape_interval: 5s          
     static_configs:    
-      - targets: ['mongoexporter:9216']      
+      - targets: ['mongoexporter:9216']    
+
+alerting:
+  alertmanagers:
+  - scheme: https
+    static_configs:
+    - targets:
+      - "alertmanager:9093"
