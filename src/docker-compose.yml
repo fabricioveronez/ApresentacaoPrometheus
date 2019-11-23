@@ -40,9 +40,9 @@ services:
     ports:
       - "9093:9093"
     volumes: 
-      - ./alertconfig.yaml:/etc/alertmanager/alertconfig.yaml
+      - ./alertconfig.yaml:/etc/alertmanager/alertconfig.yml
     command:
-      - '-config.file=/etc/alertmanager/alertconfig.yml'      
+      - '--config.file=/etc/alertmanager/alertconfig.yml'      
     depends_on:
       - prometheus
     networks:
