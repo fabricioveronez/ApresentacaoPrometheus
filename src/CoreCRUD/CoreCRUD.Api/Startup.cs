@@ -132,8 +132,7 @@ namespace CoreCRUD.Api
             app.UseHealthAllEndpoints();
             app.UseMetricsAllEndpoints();
 
-            app.UseMetricsAllMiddleware();
-            app.UseHttpsRedirection();
+            app.UseMetricsAllMiddleware();            
 
             app.UseSwagger();
 

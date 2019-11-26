@@ -2,8 +2,7 @@ groups:
 - name: Requests number
   rules:
   - alert: ManyRequests
-    expr: rate(application_httprequests_transactions_count{env="$environment",app="$application",server="$server"}[1m])*60 > 2
-    for: 1s
+    expr: rate(application_httprequests_transactions_count{app="CoreCRUD.Api"}[1m])*60 > 2    
     labels:
       severity: page
     annotations:
