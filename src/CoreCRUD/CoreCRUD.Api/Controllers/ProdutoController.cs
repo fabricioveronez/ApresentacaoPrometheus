@@ -6,6 +6,8 @@ using CoreCRUD.Application.Interfaces.Services;
 using CoreCRUD.Domain.Entities;
 using CoreCRUD.Infrastructure.Collections;
 using MongoDB.Bson;
+using System.Threading;
+using System;
 
 namespace CoreCRUD.Api.Controllers
 {
@@ -47,6 +49,8 @@ namespace CoreCRUD.Api.Controllers
         {
             try
             {
+                Random r = new Random();
+                Thread.Sleep(r.Next(0, 10000));
                 IEnumerable<Produto> listaProdutos = this.Service.GetAll();
                 IEnumerable<ProdutoViewModel> retorno = this.AutoMapper.Map<IEnumerable<ProdutoViewModel>>(listaProdutos);
 
