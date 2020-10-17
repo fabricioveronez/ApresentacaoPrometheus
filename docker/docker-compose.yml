@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  corecrudapi:
+    image: fabricioveronez/pedelogo-catalogo:v1.0.0
+    ports:
+      - "8080:80"
+    networks:
+      - corecrud
+    depends_on:
+      - corecrud-mongodb
+    environment: 
+      Mongo__Host: "corecrud-mongodb"
+      Mongo__User: "mongouser"
+      Mongo__Password: "GPX4WOwpcvOc9Wm70gAG8It7tKA0Cy090ZVO82cEJsExogsMDY"
+      Mongo__Port: "27017"
+      Mongo__Database: "admin"
+
+  corecrud-mongodb:
+    image: mongo:4.1
+    volumes:
+      - db_mongo:/data/db
+    networks:
+      - corecrud
+    restart: always
+    command: --storageEngine wiredTiger
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: GPX4WOwpcvOc9Wm70gAG8It7tKA0Cy090ZVO82cEJsExogsMDY
+
+  prometheus:
+    image: prom/prometheus    
+    volumes: 
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - corecrudapi
+    networks:
+      - corecrud
+
+  grafana:
+    image: grafana/grafana:7.2.1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - corecrud
+
+  mongoexporter:
+    image: fabricioveronez/mongo_exporter
+    ports:
+      - "9216:9216" 
+    networks:
+      - corecrud
+    environment: 
+      MONGODB_URI: "mongodb://mongouser:GPX4WOwpcvOc9Wm70gAG8It7tKA0Cy090ZVO82cEJsExogsMDY@corecrud-mongodb:27017"    
+
+volumes:
+  db_mongo:
+networks: 
+  corecrud: 
+    driver: bridge
